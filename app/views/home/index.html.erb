@@ -6,8 +6,10 @@
   <% if !current_user.role.nil? %>
     Visit
     <% if current_user.role == "Student" %>
-      <%= link_to "Your Page", student_path(current_user.student[:id]) %>
-    <% else %>
+      <%= link_to "Your Page ", student_path(current_user.student[:id]) %>
+    <% end %>
+    <% if current_user.role == "Instructor" %>
+      <%= link_to "Your Page ", instructor_path(current_user.instructor[:id]) %>
     <% end %>
   <% else %>
     No role assigned to you please select from the following ones:
