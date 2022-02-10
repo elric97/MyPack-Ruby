@@ -1,9 +1,11 @@
 class StudentsController < ApplicationController
+  skip_before_action :authorized, only: [:new, :create]
+  skip_before_action :role_assigned, only: [:new, :create]
   before_action :set_student, only: %i[ show edit update destroy ]
 
   # GET /students or /students.json
   def index
-    @students = Student.all
+    @students = Student.where('user_id = ?', current_user.id)
   end
 
   # GET /students/1 or /students/1.json
@@ -22,10 +24,15 @@ class StudentsController < ApplicationController
   # POST /students or /students.json
   def create
     @student = Student.new(student_params)
+    @student.user_id = current_user.id
+
+    @user = User.find(current_user.id)
+    @user.role = 'Student'
+    @user.save
 
     respond_to do |format|
       if @student.save
-        format.html { redirect_to student_url(@student), notice: "Student was successfully created." }
+        format.html { redirect_to student_url(@student), notice: 'Student was successfully created.' }
         format.json { render :show, status: :created, location: @student }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -38,7 +45,7 @@ class StudentsController < ApplicationController
   def update
     respond_to do |format|
       if @student.update(student_params)
-        format.html { redirect_to student_url(@student), notice: "Student was successfully updated." }
+        format.html { redirect_to student_url(@student), notice: 'Student was successfully updated.' }
         format.json { render :show, status: :ok, location: @student }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -52,7 +59,7 @@ class StudentsController < ApplicationController
     @student.destroy
 
     respond_to do |format|
-      format.html { redirect_to students_url, notice: "Student was successfully destroyed." }
+      format.html { redirect_to students_url, notice: 'Student was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -65,6 +72,6 @@ class StudentsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def student_params
-      params.require(:student).permit(:studentID, :DOB, :phone, :major)
+      params.require(:student).permit(:studentID, :DOB, :phone, :major, :email_address, :password, :phone_number, :name)
     end
 end
