@@ -1,0 +1,27 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  description: MyString
+  weekday1: MyString
+  weekday2: MyString
+  startTime: 2022-02-10 14:31:34
+  endTime: 2022-02-10 14:31:34
+  courseCode: MyString
+  capacity: 1
+  wlCapacity: 1
+  status: MyString
+  roomNumber: MyString
+
+two:
+  name: MyString
+  description: MyString
+  weekday1: MyString
+  weekday2: MyString
+  startTime: 2022-02-10 14:31:34
+  endTime: 2022-02-10 14:31:34
+  courseCode: MyString
+  capacity: 1
+  wlCapacity: 1
+  status: MyString
+  roomNumber: MyString
