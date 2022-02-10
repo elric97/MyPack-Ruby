@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  studentID: MyString
+  DOB: 2022-02-10
+  phone: MyString
+  major: MyString
+
+two:
+  studentID: MyString
+  DOB: 2022-02-10
+  phone: MyString
+  major: MyString
