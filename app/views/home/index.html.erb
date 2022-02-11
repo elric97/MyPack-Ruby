@@ -1,0 +1,24 @@
+<p id=”notice”><%= notice %></p>
+<h1>AmazeZone Shopping Portal</h1>
+<p>Purchase items at the snap of your finger</p>
+<% if current_user %>
+  Logged in as <%= current_user.name %>.
+  <% if !current_user.role.nil? %>
+    Visit
+    <% if current_user.role == "Student" %>
+      <%= link_to "Your Page ", student_path(current_user.student[:id]) %>
+    <% end %>
+    <% if current_user.role == "Instructor" %>
+      <%= link_to "Your Page ", instructor_path(current_user.instructor[:id]) %>
+    <% end %>
+  <% else %>
+    No role assigned to you please select from the following ones:
+    <%= link_to "Student", new_student_path %>
+    <%= link_to "Instructor", new_instructor_path %>
+  <% end %>
+  <br>
+  <%= link_to "Logout", logout_path %>
+<% else %>
+  <%= link_to "Signup", new_user_path %> or
+  <%= link_to "Login", login_path %>
+<% end %>

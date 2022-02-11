@@ -1,4 +1,6 @@
 class InstructorsController < ApplicationController
+  skip_before_action :authorized, only: [:new, :create]
+  skip_before_action :role_assigned, only: [:new, :create]
   before_action :set_instructor, only: %i[ show edit update destroy ]
 
   # GET /instructors or /instructors.json
@@ -22,6 +24,11 @@ class InstructorsController < ApplicationController
   # POST /instructors or /instructors.json
   def create
     @instructor = Instructor.new(instructor_params)
+    @instructor.user_id = current_user.id
+
+    @user = current_user
+    @user.role = "Instructor"
+    @user.save
 
     respond_to do |format|
       if @instructor.save
