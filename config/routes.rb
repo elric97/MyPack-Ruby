@@ -13,5 +13,6 @@ Rails.application.routes.draw do
   get 'login', to: "sessions#new", as: 'login'
   get 'logout', to: "sessions#destroy", as: 'logout'
   get '/students/:id', to: 'students#show', as: 'show_student'
+  get '/my_courses', to: 'enrollments#show_student_enrollments', as: 'show_enrollments'
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end

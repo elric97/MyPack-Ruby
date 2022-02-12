@@ -39,10 +39,10 @@
         <% if current_user.role == "Instructor" ||  current_user.role == "Admin" %>
           <td> <%= link_to 'View Students', course %></td>
           <td><%= link_to 'Edit', edit_course_path(course) %></td>
+          <% puts "checking" %>
           <td><%= link_to 'Destroy', course, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-          <%elsif  current_user.role == "Student" %>
-            <td> <%= link_to 'Enroll', new_enrollment_path(:course_id => course.id) %></td>
-
+        <%elsif  current_user.role == "Student" %>
+          <td> <%= link_to 'Enroll', new_enrollment_path(:course_id => course.id) %></td>
         <% end %>
 
       </tr>

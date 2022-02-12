@@ -1,0 +1,42 @@
+<p id="notice"><%= notice %></p>
+
+<h1>My Enrollments</h1>
+
+<table>
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th>Description</th>
+    <th>Weekday1</th>
+    <th>Weekday2</th>
+    <th>Start time</th>
+    <th>End time</th>
+    <th>Course#</th>
+    <th>Room#</th>
+    <th>Instructor</th>
+    <th colspan="3"></th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <% @enrollments.each do |enrollment| %>
+    <tr>
+      <td><%= enrollment.course.name %></td>
+      <td><%= enrollment.course.description %></td>
+      <td><%= enrollment.course.weekday1 %></td>
+      <td><%= enrollment.course.weekday2 %></td>
+      <td><%= enrollment.course.startTime %></td>
+      <td><%= enrollment.course.endTime %></td>
+      <td><%= enrollment.course.courseCode %></td>
+      <td><%= enrollment.course.roomNumber %></td>
+      <td><%= enrollment.course.instructor.name %></td>
+      <td><%= link_to 'Destroy', enrollment, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<br>
+
+
+<%= link_to "Back", student_path(current_user.student[:id]) %>

@@ -11,6 +11,17 @@
     </div>
   <% end %>
 
+  <% if current_user.role == "Student" %>
+    <div class="field">
+      <%= form.label :course_id %>
+      <%= form.text_field :course_id, value: @enrollment.course_id, :readonly => true %>
+    </div>
+
+    <div class="field">
+      <%= form.label :student_id %>
+      <%= form.text_field :student_id, value: current_user.student.id, :readonly => true %>
+    </div>
+  <% end %>
   <div class="actions">
     <%= form.submit %>
   </div>
