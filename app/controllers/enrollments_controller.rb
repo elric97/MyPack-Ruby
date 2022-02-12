@@ -22,6 +22,19 @@ class EnrollmentsController < ApplicationController
   # POST /enrollments or /enrollments.json
   def create
     @enrollment = Enrollment.new(enrollment_params)
+    @enrollment.course_id = enrollment_params[:course_id]
+    @course = Course.find(enrollment_params[:course_id])
+    @course.capacity = @course.capacity - 1
+    if @course.capacity == 0
+      @course.status = "Waitlist"
+    end
+    if current_user.role == "Student"
+      @enrollment.student_id = current_user.id
+    end
+    if current_user.role == "Instructor" || current_user.role == "Admin"
+      @enrollment.student_id = enrollment_params[:student_id]
+    end
+    @enrollment.save
 
     respond_to do |format|
       if @enrollment.save

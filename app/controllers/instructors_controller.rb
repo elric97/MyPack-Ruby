@@ -8,6 +8,9 @@ class InstructorsController < ApplicationController
     @instructors = Instructor.all
   end
 
+  def showInstructorCourses
+    @courses = Course.show(current_user.id)
+  end
   # GET /instructors/1 or /instructors/1.json
   def show
   end

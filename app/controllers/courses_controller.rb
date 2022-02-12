@@ -3,17 +3,23 @@ class CoursesController < ApplicationController
 
   # GET /courses or /courses.json
   def index
-    @courses = Course.all
+    if current_user.id != nil && current_user.role == "Instructor"
+      @courses = Course.where(instructor_id: current_user.id)
+    else
+      @courses = Course.all
+    end
   end
 
   # GET /courses/1 or /courses/1.json
   def show
   end
 
-  # GET /courses/new
+
+    # GET /courses/new
   def new
     @course = Course.new
-  end
+    end
+
 
   # GET /courses/1/edit
   def edit
@@ -22,7 +28,7 @@ class CoursesController < ApplicationController
   # POST /courses or /courses.json
   def create
     @course = Course.new(course_params)
-
+    @course.instructor_id = current_user.id
     respond_to do |format|
       if @course.save
         format.html { redirect_to course_url(@course), notice: "Course was successfully created." }
@@ -33,6 +39,8 @@ class CoursesController < ApplicationController
       end
     end
   end
+
+
 
   # PATCH/PUT /courses/1 or /courses/1.json
   def update
