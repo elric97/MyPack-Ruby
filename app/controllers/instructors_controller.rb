@@ -5,9 +5,12 @@ class InstructorsController < ApplicationController
 
   # GET /instructors or /instructors.json
   def index
-    @instructors = Instructor.all
+    @instructors = Instructor.where('user_id = ?', current_user.id)
   end
 
+  def showInstructorCourses
+    @courses = Course.show(current_user.id)
+  end
   # GET /instructors/1 or /instructors/1.json
   def show
   end
@@ -56,6 +59,7 @@ class InstructorsController < ApplicationController
 
   # DELETE /instructors/1 or /instructors/1.json
   def destroy
+    puts "Checking destroy"
     @instructor.destroy
 
     respond_to do |format|

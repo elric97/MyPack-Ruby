@@ -3,6 +3,7 @@ class EnrollmentsController < ApplicationController
 
   # GET /enrollments or /enrollments.json
   def index
+    redirect_to root_path if current_user.role == "Student"
     @enrollments = Enrollment.all
   end
 
@@ -10,9 +11,14 @@ class EnrollmentsController < ApplicationController
   def show
   end
 
+  def show_student_enrollments
+    @enrollments = Enrollment.where('student_id = ?', current_user.student.id)
+  end
+
   # GET /enrollments/new
   def new
     @enrollment = Enrollment.new
+    @enrollment.course_id = params[:course_id]
   end
 
   # GET /enrollments/1/edit
@@ -22,6 +28,14 @@ class EnrollmentsController < ApplicationController
   # POST /enrollments or /enrollments.json
   def create
     @enrollment = Enrollment.new(enrollment_params)
+    @enrollment.course_id = enrollment_params[:course_id]
+    @course = Course.find(enrollment_params[:course_id])
+    @course.capacity = @course.capacity - 1
+    @enrollment.student_id = enrollment_params[:student_id] if current_user.role == "Student"
+    if current_user.role == "Instructor" || current_user.role == "Admin"
+      @enrollment.student_id = enrollment_params[:student_id]
+    end
+    @course.save
 
     respond_to do |format|
       if @enrollment.save
@@ -59,12 +73,12 @@ class EnrollmentsController < ApplicationController
 
   private
     # Use callbacks to share common setup or constraints between actions.
-    def set_enrollment
-      @enrollment = Enrollment.find(params[:id])
-    end
+  def set_enrollment
+    @enrollment = Enrollment.find(params[:id])
+  end
 
     # Only allow a list of trusted parameters through.
-    def enrollment_params
-      params.fetch(:enrollment, {})
-    end
+  def enrollment_params
+    params.require(:enrollment).permit(:course_id, :student_id)
+  end
 end
