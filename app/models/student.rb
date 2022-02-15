@@ -4,4 +4,7 @@ class Student < ApplicationRecord
   has_many :courses, through: :enrollments
   # has_many :waitlists
   validates :studentID, uniqueness: true, presence: true
+  validates :DOB, presence: true
+  validates :phone, presence: true, uniqueness: true
+  validates :major, presence: true
 end
