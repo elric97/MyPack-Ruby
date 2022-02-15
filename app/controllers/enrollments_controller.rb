@@ -31,10 +31,7 @@ class EnrollmentsController < ApplicationController
     @enrollment.course_id = enrollment_params[:course_id]
     @course = Course.find(enrollment_params[:course_id])
     @course.capacity = @course.capacity - 1
-    @enrollment.student_id = enrollment_params[:student_id] if current_user.role == "Student"
-    if current_user.role == "Instructor" || current_user.role == "Admin"
-      @enrollment.student_id = enrollment_params[:student_id]
-    end
+    @enrollment.student_id = enrollment_params[:student_id]
     @course.save
 
     respond_to do |format|

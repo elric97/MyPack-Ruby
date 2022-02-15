@@ -18,12 +18,13 @@
         <td><%= instructor.name %></td>
         <td><%= instructor.email %></td>
         <td><%= instructor.department %></td>
-        <td><%= link_to 'Show', instructor %></td>
-
+        <% if current_user.role == "Instructor" %>
+          <td><%= link_to 'Show', instructor %></td>
+        <% end %>
         <td><%= link_to 'Edit', edit_instructor_path(instructor) %></td>
         <% if current_user.role == "Admin" %>
+          <td><%= link_to 'Add Course', new_course_path(:instructor_id => instructor.id) %></td>
           <td><%= link_to 'Destroy', instructor.user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-
         <% end %>
         <td></td>
         </tr>
@@ -31,8 +32,8 @@
   </tbody>
 </table>
 
-<br>
-
-<% if !current_user.role.nil? && current_user.role == "Admin" %>
-  <%= link_to 'New Instructor', new_instructor_path %>
+<% if current_user.role != nil && current_user.role == 'Admin' %>
+  <%= link_to 'Admin Page', admins_path %>
+  <%= link_to 'Instructors', instructors_path %>
+  <%= link_to 'Students', students_path %>
 <% end %>

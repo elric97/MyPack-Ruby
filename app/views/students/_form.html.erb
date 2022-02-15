@@ -12,16 +12,6 @@
   <% end %>
 
   <div class="field">
-    <%= form.label :name %>
-    <%= form.text_field :name, value: current_user.name %>
-  </div>
-
-  <div class="field">
-    <%= form.label :email_address %>
-    <%= form.text_field :email_address, value: current_user.email %>
-  </div>
-
-  <div class="field">
     <%= form.label :studentID %>
     <%= form.text_field :studentID %>
   </div>
@@ -39,6 +29,10 @@
   <div class="field">
     <%= form.label :major %>
     <%= form.text_field :major %>
+  </div>
+
+  <div class="field">
+    <%= form.hidden_field :user_id, value: @student.try(:user_id) %>
   </div>
 
   <div class="actions">

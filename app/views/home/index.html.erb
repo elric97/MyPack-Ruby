@@ -6,7 +6,7 @@
   <% if !current_user.role.nil? %>
     Visit
     <% if current_user.role == "Admin" %>
-      <%= link_to "Your Page ", admin_path(current_user.admin[:id]) %>
+      <%= link_to "Your Page ", admins_path %>
     <% end %>
     <% if current_user.role == "Student" %>
       <%= link_to "Your Page ", student_path(current_user.student[:id]) %>

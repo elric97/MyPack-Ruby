@@ -4,4 +4,8 @@ class User < ApplicationRecord
   has_one :instructor, dependent: :destroy
   has_one :admin, dependent: :destroy
   validates :email, uniqueness: true, presence: true
+
+  def can_assign_roles?
+    role == 'Admin'
+  end
 end
