@@ -5,4 +5,7 @@ class Student < ApplicationRecord
   # has_many :waitlists
   validates :studentID, uniqueness: true, presence: true
   delegate :name, :email, to: :user, allow_nil: :true
+  validates :DOB, presence: true
+  validates :phone, presence: true, uniqueness: true
+  validates :major, presence: true
 end
