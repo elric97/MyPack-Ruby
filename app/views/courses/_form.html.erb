@@ -66,6 +66,9 @@
     <%= form.text_field :roomNumber %>
   </div>
 
+  <div class="field">
+    <%= form.hidden_field :instructor_id, value: course.instructor_id %>
+  </div>
 
 
   <div class="actions">

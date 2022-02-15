@@ -5,7 +5,14 @@ class InstructorsController < ApplicationController
 
   # GET /instructors or /instructors.json
   def index
-    @instructors = Instructor.where('user_id = ?', current_user.id)
+    case current_user.role
+    when 'Admin'
+      @instructors = Instructor.all
+    when 'Instructor'
+      @instructors = Instructor.where('user_id = ?', current_user.id)
+    else
+      redirect_to root_path
+    end
   end
 
   def showInstructorCourses
@@ -70,12 +77,12 @@ class InstructorsController < ApplicationController
 
   private
     # Use callbacks to share common setup or constraints between actions.
-    def set_instructor
-      @instructor = Instructor.find(params[:id])
-    end
+  def set_instructor
+    @instructor = Instructor.find(params[:id])
+  end
 
     # Only allow a list of trusted parameters through.
-    def instructor_params
-      params.require(:instructor).permit(:department)
-    end
+  def instructor_params
+    params.require(:instructor).permit(:department)
+  end
 end

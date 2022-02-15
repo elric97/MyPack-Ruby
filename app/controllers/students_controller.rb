@@ -5,8 +5,14 @@ class StudentsController < ApplicationController
 
   # GET /students or /students.json
   def index
-    @students = Student.where('user_id = ?', current_user.id)
-
+    case current_user.role
+    when 'Admin'
+      @students = Student.all
+    when 'Instructor'
+      @students = Student.where('user_id = ?', current_user.id)
+    else
+      redirect_to root_path
+    end
   end
 
   # GET /students/1 or /students/1.json
@@ -44,15 +50,19 @@ class StudentsController < ApplicationController
 
   # PATCH/PUT /students/1 or /students/1.json
   def update
-    respond_to do |format|
-      if @student.update(student_params)
-        format.html { redirect_to student_url(@student), notice: 'Student was successfully updated.' }
-        format.json { render :show, status: :ok, location: @student }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @student.errors, status: :unprocessable_entity }
-      end
-    end
+    user_params = {
+      name: student_params[:name], email: student_params[:email_address]
+    }
+    puts user_params
+    # respond_to do |format|
+    #   if @student.update(student_params)
+    #     format.html { redirect_to student_url(@student), notice: 'Student was successfully updated.' }
+    #     format.json { render :show, status: :ok, location: @student }
+    #   else
+    #     format.html { render :edit, status: :unprocessable_entity }
+    #     format.json { render json: @student.errors, status: :unprocessable_entity }
+    #   end
+    # end
   end
 
   # DELETE /students/1 or /students/1.json

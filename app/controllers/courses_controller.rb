@@ -17,6 +17,11 @@ class CoursesController < ApplicationController
     # GET /courses/new
   def new
     @course = Course.new
+    @course.instructor_id = if current_user.role == 'Instructor'
+                              current_user.instructor.id
+                            else
+                              params[:instructor_id]
+                            end
   end
 
 
@@ -27,7 +32,6 @@ class CoursesController < ApplicationController
   # POST /courses or /courses.json
   def create
     @course = Course.new(course_params)
-    @course.instructor_id = current_user.instructor.id
     respond_to do |format|
       if @course.save
         format.html { redirect_to course_url(@course), notice: "Course was successfully created." }
@@ -72,6 +76,6 @@ class CoursesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def course_params
-      params.require(:course).permit(:name, :description, :weekday1, :weekday2, :startTime, :endTime, :courseCode, :capacity, :wlCapacity, :status, :roomNumber)
+      params.require(:course).permit(:name, :description, :weekday1, :weekday2, :startTime, :endTime, :courseCode, :capacity, :wlCapacity, :status, :roomNumber, :instructor_id)
     end
 end
