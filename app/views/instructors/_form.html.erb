@@ -16,6 +16,10 @@
     <%= form.text_field :department %>
   </div>
 
+  <div class="field">
+    <%= form.hidden_field :user_id, value: @instructor.try(:user_id) %>
+  </div>
+
   <div class="actions">
     <%= form.submit %>
   </div>
