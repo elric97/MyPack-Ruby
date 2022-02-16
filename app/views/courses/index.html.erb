@@ -31,16 +31,31 @@
         <td><%= course.startTime %></td>
         <td><%= course.endTime %></td>
         <td><%= course.courseCode %></td>
-        <td><%= course.capacity %></td>
-        <td><%= course.wlCapacity %></td>
-        <td><%= course.status %></td>
+
+        <% @enrollment =  Enrollment.where(course_id: course.id)%>
+        <td><%= course.capacity - @enrollment.count %></td>
+
+        <% @waitlist = Waitlist.where(course_id: course.id)%>
+        <td><%= course.wlCapacity - @waitlist.count %></td>
+
+        <% if course.capacity - @enrollment.count > 0 %>
+          <% course.status = "Open"%>
+        <% elsif  course.capacity - @enrollment.count <= 0 && course.wlCapacity - @waitlist.count >0%>
+          <% course.status = "Waitlist"%>
+        <% elsif  course.capacity - @enrollment.count <= 0 && course.wlCapacity - @waitlist.count <= 0%>
+          <% course.status = "Closed"%>
+          <%end %>
+
+        <td><%= course.status %>
         <td><%= course.roomNumber %></td>
         <td><%= course.instructor_id %></td>
+
         <% if current_user.role == "Instructor" ||  current_user.role == "Admin" %>
           <td> <%= link_to 'View Students', course_path(course) %></td>
           <td><%= link_to 'Edit', edit_course_path(course) %></td>
           <td><%= link_to 'Destroy', course, method: :delete, data: { confirm: 'Are you sure?' } %></td>
         <% end %>
+        
         <td> <%= link_to 'Enroll', new_enrollment_path(:course_id => course.id) %></td>
       </tr>
     <% end %>
