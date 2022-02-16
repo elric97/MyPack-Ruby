@@ -25,6 +25,11 @@ class InstructorsController < ApplicationController
   # GET /instructors/new
   def new
     @instructor = Instructor.new
+    @instructor.user_id = if current_user.role != 'Admin'
+                         current_user.id
+                       else
+                         params[:user_id]
+                       end
   end
 
   # GET /instructors/1/edit
@@ -34,9 +39,8 @@ class InstructorsController < ApplicationController
   # POST /instructors or /instructors.json
   def create
     @instructor = Instructor.new(instructor_params)
-    @instructor.user_id = current_user.id
 
-    @user = current_user
+    @user = User.find(@instructor.user_id)
     @user.role = "Instructor"
     @user.save
 
@@ -83,6 +87,6 @@ class InstructorsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
   def instructor_params
-    params.require(:instructor).permit(:department)
+    params.require(:instructor).permit(:department, :user_id)
   end
 end
