@@ -6,10 +6,8 @@ class Waitlist < ApplicationRecord
   validate :check_if_enrolled
 
   def check_if_enrolled
-    @enrollment = Enrollment.where(course_id: self.course_id, student_id: self.student_id)
-    if @enrollment != nil
-      errors.add( :course_id, 'Already enrolled')
-    end
+    @enrollment = Enrollment.where('course_id = ? AND student_id = ?', course_id, student_id)
+    errors.add(:course_id, 'Already enrolled') unless @enrollment.first.nil?
   end
 end
 

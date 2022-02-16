@@ -57,15 +57,13 @@ class EnrollmentsController < ApplicationController
 
   # DELETE /enrollments/1 or /enrollments/1.json
   def destroy
+    @waitlists = Waitlist.where(course_id: @enrollment.course_id)
 
-
-    @waitlists = Waitlist.where(course_id: self.course_id)
-
-    if @waitlists != nil
+    if !@waitlists.first.nil?
       @waitlists.sort_by(&:created_at)
       @waitlist = @waitlists.first
 
-      @newEnrollment = Enrollment.new(course_id :@waitlist.course_id student_id :@waitlist.student_id)
+      @newEnrollment = Enrollment.new(:course_id => @waitlist.course_id, :student_id => @waitlist.student_id)
 
       @waitlist.destroy
 
