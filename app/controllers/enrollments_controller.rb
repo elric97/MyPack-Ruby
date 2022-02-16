@@ -3,7 +3,7 @@ class EnrollmentsController < ApplicationController
 
   # GET /enrollments or /enrollments.json
   def index
-    redirect_to root_path if current_user.role == "Student"
+    redirect_to root_path
     @enrollments = Enrollment.all
   end
 

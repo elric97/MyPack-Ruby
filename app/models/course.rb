@@ -1,7 +1,7 @@
 class Course < ApplicationRecord
   belongs_to :instructor
   has_many :enrollments
-  has_many :students, through: :enrollments
+  has_many :students, through: :enrollments, dependent: :destroy
   # has_many :waitlists
   validates :name, uniqueness: true, presence: true
   validates :description, presence: true
