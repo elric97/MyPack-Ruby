@@ -2,6 +2,7 @@ class InstructorsController < ApplicationController
   skip_before_action :authorized, only: [:new, :create]
   skip_before_action :role_assigned, only: [:new, :create]
   before_action :set_instructor, only: %i[ show edit update destroy ]
+  before_action :check_role
 
   # GET /instructors or /instructors.json
   def index
@@ -20,6 +21,11 @@ class InstructorsController < ApplicationController
   end
   # GET /instructors/1 or /instructors/1.json
   def show
+    unless current_user.can_crud?(@instructor.user)
+      respond_to do |format|
+        format.html { redirect_to root_path, notice: 'You are not allowed access to this page.' }
+      end
+    end
   end
 
   # GET /instructors/new
@@ -34,6 +40,11 @@ class InstructorsController < ApplicationController
 
   # GET /instructors/1/edit
   def edit
+    unless current_user.can_crud?(@instructor.user)
+      respond_to do |format|
+        format.html { redirect_to root_path, notice: 'You are not allowed access to this page.' }
+      end
+    end
   end
 
   # POST /instructors or /instructors.json
@@ -83,6 +94,15 @@ class InstructorsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
   def set_instructor
     @instructor = Instructor.find(params[:id])
+  end
+
+  def check_role
+    if !current_user.role.nil? && current_user.role == 'Student'
+      respond_to do |format|
+        format.html { redirect_to root_path, alert: "Not authorised to view this." }
+        format.json { head :no_content }
+      end
+    end
   end
 
     # Only allow a list of trusted parameters through.

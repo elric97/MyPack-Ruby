@@ -1,8 +1,8 @@
 <p id=”notice”><%= notice %></p>
+<p id=”alert”><%= alert %></p>
 <h1>MyPack Portal</h1>
 <p>Course Enrollment</p>
 <% if current_user %>
-  Logged in as <%= current_user.name %>.
   <% if !current_user.role.nil? %>
     Visit
     <% if current_user.role == "Admin" %>

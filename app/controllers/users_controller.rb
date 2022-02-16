@@ -11,6 +11,11 @@ class UsersController < ApplicationController
 
   # GET /users/1 or /users/1.json
   def show
+    unless current_user.can_crud?(@user)
+      respond_to do |format|
+        format.html { redirect_to root_path, notice: 'You are not allowed access to this page.' }
+      end
+    end
   end
 
   # GET /users/new
@@ -20,6 +25,11 @@ class UsersController < ApplicationController
 
   # GET /users/1/edit
   def edit
+    unless current_user.can_crud?(@user)
+      respond_to do |format|
+        format.html { redirect_to root_path, notice: 'You are not allowed access to this page.' }
+      end
+    end
   end
 
   # POST /users or /users.json
@@ -52,6 +62,13 @@ class UsersController < ApplicationController
 
   # DELETE /users/1 or /users/1.json
   def destroy
+    unless current_user.can_destroy?(@user)
+      respond_to do |format|
+        format.html { redirect_to root_path, alert: 'Admin user cannot be destroyed' }
+        format.json { head :no_content }
+      end
+    end
+
     @user.destroy
 
     respond_to do |format|
