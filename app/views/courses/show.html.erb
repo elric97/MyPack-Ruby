@@ -54,7 +54,7 @@
   <strong> Room Number:</strong>
   <%= @course.roomNumber %>
 </p>
-
+<hr>
 <% if !current_user.role.nil? && current_user.role != 'Student' %>
   <table>
     <th> Enrolled Students</th>
@@ -70,7 +70,22 @@
     <% end %>
   </table>
 <% end %>
-
+<hr>
+<% if !current_user.role.nil? && current_user.role != 'Student' %>
+  <table>
+    <th> Waitlisted Students</th>
+    <th colspan="2"></th>
+    <th></th>
+    <%  @course.waitlists.each do |course_waitlist|%>
+      <% @student = Student.find(course_waitlist.student_id) %>
+      <tr>
+        <td> <%= @student.name%> </td>
+        <td> <%= @student.studentID%> </td>
+        <td> <%= link_to 'Remove Student', course_waitlist, method: :delete, data: { confirm: 'Are you sure?' } %> </td>
+      </tr>
+    <% end %>
+  </table>
+<% end %>
 
 <%= link_to 'Back', courses_path %>
 

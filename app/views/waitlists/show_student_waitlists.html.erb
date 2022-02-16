@@ -1,0 +1,42 @@
+<p id="notice"><%= notice %></p>
+
+<h1>My Waitlists</h1>
+
+<table>
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th>Description</th>
+    <th>Weekday1</th>
+    <th>Weekday2</th>
+    <th>Start time</th>
+    <th>End time</th>
+    <th>Course#</th>
+    <th>Room#</th>
+    <th>Instructor</th>
+    <th colspan="3"></th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <% @waitlists.each do |waitlist| %>
+    <tr>
+      <td><%= waitlist.course.name %></td>
+      <td><%= waitlist.course.description %></td>
+      <td><%= waitlist.course.weekday1 %></td>
+      <td><%= waitlist.course.weekday2 %></td>
+      <td><%= waitlist.course.startTime.strftime('%H:%M') %></td>
+      <td><%= waitlist.course.endTime.strftime('%H:%M') %></td>
+      <td><%= waitlist.course.courseCode %></td>
+      <td><%= waitlist.course.roomNumber %></td>
+      <td><%= waitlist.course.instructor.name %></td>
+      <td><%= link_to 'Destroy', waitlist, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<br>
+
+
+<%= link_to "Back", student_path(current_user.student[:id]) %>
