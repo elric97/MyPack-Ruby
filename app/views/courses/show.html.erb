@@ -56,6 +56,20 @@
 </p>
 
 
+<table>
+  <th> Enrolled Students</th>
+  <th colspan="2"></th>
+
+  <th></th>
+  <%  @course.enrollments.each do |course_enrollment|%>
+    <% @student = Student.find(course_enrollment.student_id) %>
+    <tr>
+      <td> <%= @student.name%> </td>
+      <td> <%= @student.studentID%> </td>
+      <td> Link to drop </td>
+    </tr>
+  <% end %>
+</table>
 
 
 <%= link_to 'Back', courses_path %>
