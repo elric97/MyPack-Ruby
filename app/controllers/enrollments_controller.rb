@@ -57,8 +57,22 @@ class EnrollmentsController < ApplicationController
 
   # DELETE /enrollments/1 or /enrollments/1.json
   def destroy
-    @enrollment.destroy
 
+
+    @waitlists = Waitlist.where(course_id: self.course_id)
+
+    if @waitlists != nil
+      @waitlists.sort_by(&:created_at)
+      @waitlist = @waitlists.first
+
+      @newEnrollment = Enrollment.new(course_id :@waitlist.course_id student_id :@waitlist.student_id)
+
+      @waitlist.destroy
+
+      @newEnrollment.save
+    end
+
+    @enrollment.destroy
     respond_to do |format|
       format.html { redirect_to enrollments_url, notice: "Enrollment was successfully destroyed." }
       format.json { head :no_content }

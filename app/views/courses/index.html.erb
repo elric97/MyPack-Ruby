@@ -52,7 +52,7 @@
         <% if course.status == "Open" %>
           <td> <%= link_to 'Enroll', new_enrollment_path(:course_id => course.id) %></td>
         <%elsif course.status == "Waitlist"%>
-          <td> <%= link_to 'Waitlist', new_enrollment_path(:course_id => course.id) %></td>
+          <td> <%= link_to 'Waitlist', new_waitlist_path(:course_id => course.id) %></td>
         <% end %>
       </tr>
     <% end %>
