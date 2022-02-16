@@ -8,7 +8,7 @@ class StudentsController < ApplicationController
     case current_user.role
     when 'Admin'
       @students = Student.all
-    when 'Instructor'
+    when 'Student'
       @students = Student.where('user_id = ?', current_user.id)
     else
       redirect_to root_path
@@ -17,6 +17,11 @@ class StudentsController < ApplicationController
 
   # GET /students/1 or /students/1.json
   def show
+    unless current_user.can_crud?(@student.user)
+      respond_to do |format|
+        format.html { redirect_to root_path, notice: 'You are not allowed access to this page.' }
+      end
+    end
   end
 
   # GET /students/new
@@ -31,6 +36,11 @@ class StudentsController < ApplicationController
 
   # GET /students/1/edit
   def edit
+    unless current_user.can_crud?(@student.user)
+      respond_to do |format|
+        format.html { redirect_to root_path, notice: 'You are not allowed access to this page.' }
+      end
+    end
   end
 
   # POST /students or /students.json
