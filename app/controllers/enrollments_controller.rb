@@ -3,7 +3,7 @@ class EnrollmentsController < ApplicationController
 
   # GET /enrollments or /enrollments.json
   def index
-    redirect_to root_path if current_user.role == "Student"
+    redirect_to root_path
     @enrollments = Enrollment.all
   end
 
@@ -29,13 +29,7 @@ class EnrollmentsController < ApplicationController
   def create
     @enrollment = Enrollment.new(enrollment_params)
     @enrollment.course_id = enrollment_params[:course_id]
-    @course = Course.find(enrollment_params[:course_id])
-    @course.capacity = @course.capacity - 1
-    @enrollment.student_id = enrollment_params[:student_id] if current_user.role == "Student"
-    if current_user.role == "Instructor" || current_user.role == "Admin"
-      @enrollment.student_id = enrollment_params[:student_id]
-    end
-    @course.save
+    @enrollment.student_id = enrollment_params[:student_id]
 
     respond_to do |format|
       if @enrollment.save

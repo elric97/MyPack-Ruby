@@ -5,8 +5,14 @@ class StudentsController < ApplicationController
 
   # GET /students or /students.json
   def index
-    @students = Student.where('user_id = ?', current_user.id)
-
+    case current_user.role
+    when 'Admin'
+      @students = Student.all
+    when 'Instructor'
+      @students = Student.where('user_id = ?', current_user.id)
+    else
+      redirect_to root_path
+    end
   end
 
   # GET /students/1 or /students/1.json
@@ -16,6 +22,11 @@ class StudentsController < ApplicationController
   # GET /students/new
   def new
     @student = Student.new
+    @student.user_id = if current_user.role != 'Admin'
+                         current_user.id
+                       else
+                         params[:user_id]
+                       end
   end
 
   # GET /students/1/edit
@@ -25,9 +36,8 @@ class StudentsController < ApplicationController
   # POST /students or /students.json
   def create
     @student = Student.new(student_params)
-    @student.user_id = current_user.id
 
-    @user = User.find(current_user.id)
+    @user = User.find(@student.user_id)
     @user.role = 'Student'
     @user.save
 
@@ -73,6 +83,6 @@ class StudentsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def student_params
-      params.require(:student).permit(:studentID, :DOB, :phone, :major, :email_address, :password, :phone_number, :name)
+      params.require(:student).permit(:studentID, :DOB, :phone, :major, :email_address, :password, :user_id, :name)
     end
 end
