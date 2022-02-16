@@ -29,10 +29,7 @@ class EnrollmentsController < ApplicationController
   def create
     @enrollment = Enrollment.new(enrollment_params)
     @enrollment.course_id = enrollment_params[:course_id]
-    @course = Course.find(enrollment_params[:course_id])
-    @course.capacity = @course.capacity - 1
     @enrollment.student_id = enrollment_params[:student_id]
-    @course.save
 
     respond_to do |format|
       if @enrollment.save

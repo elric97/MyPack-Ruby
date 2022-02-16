@@ -8,6 +8,21 @@ class CoursesController < ApplicationController
                else
                  Course.all
                end
+    @courses.each do |course|
+      @enrollment =  Enrollment.where(course_id: course.id)
+      @waitlist = Waitlist.where(course_id: course.id)
+      if course.capacity - @enrollment.count > 0
+        course.status = "Open"
+      elsif  course.capacity - @enrollment.count <= 0 && course.wlCapacity - @waitlist.count >0
+        course.status = "Waitlist"
+
+      elsif  course.capacity - @enrollment.count <= 0 && course.wlCapacity - @waitlist.count <= 0
+        course.status = "Closed"
+      end
+      course.save
+    end
+
+
   end
 
   # GET /courses/1 or /courses/1.json
@@ -22,6 +37,7 @@ class CoursesController < ApplicationController
                             else
                               params[:instructor_id]
                             end
+
   end
 
 
