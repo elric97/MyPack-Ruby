@@ -9,4 +9,12 @@ class User < ApplicationRecord
   def can_assign_roles?
     role == 'Admin'
   end
+
+  def can_crud?(user)
+    role == 'Admin' || id == user.id
+  end
+
+  def can_destroy?(user)
+    role == 'Admin' && user.role != 'Admin'
+  end
 end

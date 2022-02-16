@@ -25,8 +25,8 @@
       <td><%= enrollment.course.description %></td>
       <td><%= enrollment.course.weekday1 %></td>
       <td><%= enrollment.course.weekday2 %></td>
-      <td><%= enrollment.course.startTime %></td>
-      <td><%= enrollment.course.endTime %></td>
+      <td><%= enrollment.course.startTime.strftime('%H:%M') %></td>
+      <td><%= enrollment.course.endTime.strftime('%H:%M') %></td>
       <td><%= enrollment.course.courseCode %></td>
       <td><%= enrollment.course.roomNumber %></td>
       <td><%= enrollment.course.instructor.name %></td>

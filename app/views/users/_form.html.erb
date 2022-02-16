@@ -18,12 +18,12 @@
 
   <div class="field">
     <%= form.label :email %>
-    <%= form.text_field :email %>
+    <%= form.text_field :email, :readonly => @user.try(:role) == 'Admin' %>
   </div>
 
   <div class="field">
     <%= form.label :password %>
-    <%= form.password_field :password %>
+    <%= form.password_field :password, :readonly => @user.try(:role) == 'Admin'%>
   </div>
 
   <div class="actions">
