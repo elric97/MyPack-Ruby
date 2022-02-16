@@ -1,10 +1,13 @@
 <p id=”notice”><%= notice %></p>
-<h1>AmazeZone Shopping Portal</h1>
-<p>Purchase items at the snap of your finger</p>
+<h1>MyPack Portal</h1>
+<p>Course Enrollment</p>
 <% if current_user %>
   Logged in as <%= current_user.name %>.
   <% if !current_user.role.nil? %>
     Visit
+    <% if current_user.role == "Admin" %>
+      <%= link_to "Your Page ", admins_path %>
+    <% end %>
     <% if current_user.role == "Student" %>
       <%= link_to "Your Page ", student_path(current_user.student[:id]) %>
     <% end %>

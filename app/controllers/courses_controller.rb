@@ -8,6 +8,21 @@ class CoursesController < ApplicationController
                else
                  Course.all
                end
+    @courses.each do |course|
+      @enrollment =  Enrollment.where(course_id: course.id)
+      @waitlist = Waitlist.where(course_id: course.id)
+      if course.capacity - @enrollment.count > 0
+        course.status = "Open"
+      elsif  course.capacity - @enrollment.count <= 0 && course.wlCapacity - @waitlist.count >0
+        course.status = "Waitlist"
+
+      elsif  course.capacity - @enrollment.count <= 0 && course.wlCapacity - @waitlist.count <= 0
+        course.status = "Closed"
+      end
+      course.save
+    end
+
+
   end
 
   # GET /courses/1 or /courses/1.json
@@ -17,6 +32,12 @@ class CoursesController < ApplicationController
     # GET /courses/new
   def new
     @course = Course.new
+    @course.instructor_id = if current_user.role == 'Instructor'
+                              current_user.instructor.id
+                            else
+                              params[:instructor_id]
+                            end
+
   end
 
 
@@ -27,7 +48,7 @@ class CoursesController < ApplicationController
   # POST /courses or /courses.json
   def create
     @course = Course.new(course_params)
-    @course.instructor_id = current_user.instructor.id
+    @course.status = "Open"
     respond_to do |format|
       if @course.save
         format.html { redirect_to course_url(@course), notice: "Course was successfully created." }
@@ -72,6 +93,6 @@ class CoursesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def course_params
-      params.require(:course).permit(:name, :description, :weekday1, :weekday2, :startTime, :endTime, :courseCode, :capacity, :wlCapacity, :status, :roomNumber)
+      params.require(:course).permit(:name, :description, :weekday1, :weekday2, :startTime, :endTime, :courseCode, :capacity, :wlCapacity, :status, :roomNumber, :instructor_id)
     end
 end

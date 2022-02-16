@@ -5,7 +5,8 @@
 <table>
   <thead>
     <tr>
-      <th>Studentid</th>
+      <th>Name</th>
+      <th>Student ID</th>
       <th>Dob</th>
       <th>Phone</th>
       <th>Major</th>
@@ -16,20 +17,24 @@
   <tbody>
     <% @students.each do |student| %>
       <tr>
+        <td><%= student.name %></td>
         <td><%= student.studentID %></td>
         <td><%= student.DOB %></td>
         <td><%= student.phone %></td>
         <td><%= student.major %></td>
         <td><%= link_to 'Show', student %></td>
         <td><%= link_to 'Edit', edit_student_path(student) %></td>
-        <td><%= link_to 'Destroy', student, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% if current_user.role == "Admin" %>
+          <td><%= link_to 'Destroy', student.user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% end %>
       </tr>
     <% end %>
   </tbody>
 </table>
 
-<br>
 
-<% if !current_user.role.nil? && current_user.role == "Admin" %>
-  <%= link_to 'New Student', new_student_path %>
+<% if current_user.role != nil && current_user.role == 'Admin' %>
+  <%= link_to 'Admin Page', admins_path %>
+  <%= link_to 'Instructors', instructors_path %>
+  <%= link_to 'Students', students_path %>
 <% end %>

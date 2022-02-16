@@ -57,15 +57,13 @@
   </div>
 
   <div class="field">
-    <%= form.label :status %>
-    <%= form.text_field :status %>
-  </div>
-
-  <div class="field">
     <%= form.label :roomNumber %>
     <%= form.text_field :roomNumber %>
   </div>
 
+  <div class="field">
+    <%= form.hidden_field :instructor_id, value: course.instructor_id %>
+  </div>
 
 
   <div class="actions">

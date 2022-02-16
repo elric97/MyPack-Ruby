@@ -3,16 +3,23 @@ class WaitlistsController < ApplicationController
 
   # GET /waitlists or /waitlists.json
   def index
+    redirect_to root_path if current_user.role == "Student"
     @waitlists = Waitlist.all
+
   end
 
   # GET /waitlists/1 or /waitlists/1.json
   def show
   end
 
+  def show_student_waitlists
+    @waitlists = Waitlist.where('student_id = ?', current_user.student.id)
+  end
   # GET /waitlists/new
   def new
     @waitlist = Waitlist.new
+    @waitlist.course_id = params[:course_id]
+
   end
 
   # GET /waitlists/1/edit
@@ -22,6 +29,12 @@ class WaitlistsController < ApplicationController
   # POST /waitlists or /waitlists.json
   def create
     @waitlist = Waitlist.new(waitlist_params)
+    @waitlist.course_id = waitlist_params[:course_id]
+    @waitlist.student_id = waitlist_params[:student_id]
+
+
+
+
 
     respond_to do |format|
       if @waitlist.save
@@ -65,6 +78,6 @@ class WaitlistsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def waitlist_params
-      params.fetch(:waitlist, {})
+      params.require(:waitlist).permit(:course_id, :student_id)
     end
 end

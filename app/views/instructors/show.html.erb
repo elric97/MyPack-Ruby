@@ -16,5 +16,5 @@
 
 <%= link_to 'Edit', edit_instructor_path(@instructor) %> |
 <%= link_to 'Back', instructors_path %>
-<%= link_to 'Add Course', new_course_path %>
+<%= link_to 'Add Course', new_course_path(:instructor_id => @instructor.id) %>
 <%= link_to 'View My Courses', courses_path %>
