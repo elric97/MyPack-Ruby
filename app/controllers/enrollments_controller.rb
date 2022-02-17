@@ -3,8 +3,15 @@ class EnrollmentsController < ApplicationController
 
   # GET /enrollments or /enrollments.json
   def index
-    redirect_to root_path
-    @enrollments = Enrollment.all
+    @enrollments = case current_user.role
+                   when 'Admin'
+                     Enrollment.all
+                   when 'Student'
+                     Enrollment.where(student_id: current_user.student.id)
+                   else
+                     Enrollment.where('course_id in (select course_id from courses where instructor_id = ?)',
+                                      current_user.instructor.id)
+                   end
   end
 
   # GET /enrollments/1 or /enrollments/1.json
@@ -23,6 +30,10 @@ class EnrollmentsController < ApplicationController
 
   # GET /enrollments/1/edit
   def edit
+    respond_to do |format|
+      format.html { redirect_to enrollments_url, notice: "You don't have permission for this" }
+      format.json { render :show, status: :created, location: @enrollment }
+    end
   end
 
   # POST /enrollments or /enrollments.json
@@ -55,8 +66,21 @@ class EnrollmentsController < ApplicationController
     end
   end
 
+  def check_permission?(enrollment)
+    is_admin = current_user.role == 'Admin'
+    can_delete = false
+    can_delete = if current_user.role == 'Student'
+                   current_user.student.can_delete_enrollment?(enrollment.student_id)
+                 else
+                   current_user.instructor.can_delete_enrollment?(enrollment.course)
+                 end
+
+    is_admin || can_delete
+  end
   # DELETE /enrollments/1 or /enrollments/1.json
   def destroy
+    check_permission?(@enrollment)
+
     @waitlists = Waitlist.where(course_id: @enrollment.course_id)
 
     if !@waitlists.first.nil?

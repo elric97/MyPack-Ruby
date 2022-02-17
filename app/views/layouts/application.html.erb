@@ -19,10 +19,13 @@
         Logged in as <%= current_user.name %>. Role
         <% if current_user.role == 'Admin' %>
           <u>Admin</u>
+          <%= link_to "Admin Profile", admin_path(current_user.admin[:id]) %>
         <% elsif current_user.role == 'Instructor'%>
           <b><i>Instructor</i></b>
+          <%= link_to "Instructor Profile", instructor_path(current_user.instructor[:id]) %>
         <% else %>
           <b>Student</b>
+          <%= link_to "Student Profile", instructor_path(current_user.student[:id]) %>
         <% end %>
       <% end %>
     <%end %>
