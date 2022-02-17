@@ -24,3 +24,17 @@ Registration process inputs only basic information required for authentication p
 
 
 
+## Edge cases
+
+### Automatic enrollment from waitlist:
+When a student drops a course, destroy function of enrollment controller retreives all the waitlist records for that particular course and sorts it on the basis of created_at attribute. Then controller pops out the first record and creates an enrollment for it. Original enrollment is destroyed.
+
+### Handling deletion of records in the children table:
+When a Parent record is destroyed, it's corresponding children records from other table's are destroyed with dependents :destroy in the parent's model.
+
+### Handling course status and capacity:
+
+Each time course records are displayed, we are retrieving number of that particular course records from the enrollment table and subtracting that number from the original capacity to show users the number of seats left. For checking the number of waitlist positions left for that course, we retreive the number of that course's records from waitlist table and subtract it from the original waitlist capacity.
+
+If there are seats left for a course, we keep the course status as open and display enroll button. If there are no seats left but waitlist positions are available, then we change the status to waitlist and display waitlist button. Otherwise we change the status to closed and donot display any button for enrollment/waitlist.
+
