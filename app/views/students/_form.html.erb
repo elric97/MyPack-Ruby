@@ -18,7 +18,7 @@
 
   <div class="field">
     <%= form.label :DOB %>
-    <%= form.date_select :DOB %>
+    <%= form.date_select :DOB, {order: [:month, :day, :year], prompt: { day: 'Select day', month: 'Select month', year: 'Select year' }, start_year: Date.today.year - 18, end_year: Date.today.year - 100}%>
   </div>
 
   <div class="field">
