@@ -22,7 +22,16 @@ Registration process inputs only basic information required for authentication p
 
 <img width="758" alt="Screenshot 2022-02-16 at 10 00 51 PM" src="https://media.github.ncsu.edu/user/24777/files/c9e2a844-4d35-4ef4-84db-c6f2af256c22">
 
+### Admin panel
+Can be used to create new users and assign roles to them
+<img width="1440" alt="Screen Shot 2022-02-16 at 23 33 44" src="https://media.github.ncsu.edu/user/22515/files/faaf14f8-ca12-49a3-b000-71704667e6c6">
 
+Courses view of Admin and Instructor, they can click on enroll and select students from a drop down menu
+<img width="1440" alt="Screen Shot 2022-02-16 at 23 36 08" src="https://media.github.ncsu.edu/user/22515/files/342cf26f-1b16-41cf-9ef1-efd2621c4c97">
+
+
+### Student View of courses, have an option just for enrollment
+<img width="1440" alt="Screen Shot 2022-02-16 at 23 37 56" src="https://media.github.ncsu.edu/user/22515/files/b52ddaaf-1537-4d59-9684-f26537d049b6">
 
 ## Edge cases
 
