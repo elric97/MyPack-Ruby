@@ -1,5 +1,10 @@
 # Student Enrollment System
 ## Deployed application link - https://student-enrollment-oodd.herokuapp.com
+## Steps to run the program
+* Git clone the repository using 'git clone' command
+* Run bundle install to get required gems
+* Run commands 'rails db:setup' followed by 'rails db:migrate'
+* Run 'rails server' command to start the app
 ## Admin credentials
 email - admin@admin.com
 password - 123456
