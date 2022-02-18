@@ -14,7 +14,7 @@ class Course < ApplicationRecord
   validates :startTime, presence: true
   validates :endTime, presence: true
   validates :courseCode, uniqueness: true, presence: true
-  validates :capacity, presence: true
+  validates :capacity, presence: true, allow_nil: false
   validates :wlCapacity, presence: true
   validates :status, presence: true
   validates :roomNumber, presence: true
@@ -33,11 +33,11 @@ class Course < ApplicationRecord
   end
 
   def check_course_capacity
-    errors.add(:capacity, 'cannot be 0 or less') if capacity <= 0
+    errors.add(:capacity, 'cannot be 0 or less') if capacity.nil? || capacity <= 0
   end
 
   def check_if_empty
-    errors.add(:roomNumber, 'cannot be an empty string') if roomNumber == " "
+    errors.add(:roomNumber, 'cannot be an empty string') if !nil? || roomNumber == " "
   end
 
 end

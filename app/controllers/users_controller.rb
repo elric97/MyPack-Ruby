@@ -91,15 +91,21 @@ class UsersController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_user
-      @user = User.find(params[:id])
+  # Use callbacks to share common setup or constraints between actions.
+  def set_user
+    @user = User.find_by(id: params[:id])
+    if @user.nil? || !current_user.can_crud?(@user)
+      respond_to do |format|
+        format.html { redirect_to users_path, notice: 'Not authorised to view this' }
+        format.json { head :no_content }
+      end
     end
+  end
 
-    # Only allow a list of trusted parameters through.
-    def user_params
-      params.require(:user).permit(:name, :email, :password)
-    end
+  # Only allow a list of trusted parameters through.
+  def user_params
+    params.require(:user).permit(:name, :email, :password)
+  end
 
   def raise_error
     @user = User.new
