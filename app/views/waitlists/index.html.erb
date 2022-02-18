@@ -5,6 +5,9 @@
 <table>
   <thead>
     <tr>
+      <td>Student ID</td>
+      <td>Student Name</td>
+      <td>Course Name</td>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -12,6 +15,9 @@
   <tbody>
     <% @waitlists.each do |waitlist| %>
       <tr>
+        <td><%= waitlist.student.id %></td>
+        <td><%= waitlist.student.name %></td>
+        <td><%= waitlist.course.name %></td>
         <td><%= link_to 'Show', waitlist %></td>
         <td><%= link_to 'Edit', edit_waitlist_path(waitlist) %></td>
         <td><%= link_to 'Destroy', waitlist, method: :delete, data: { confirm: 'Are you sure?' } %></td>
@@ -22,4 +28,4 @@
 
 <br>
 
-<%= link_to 'New Waitlist', new_waitlist_path %>
+<%= link_to 'New Waitlist', courses_path %>

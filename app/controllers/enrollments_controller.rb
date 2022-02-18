@@ -24,6 +24,11 @@ class EnrollmentsController < ApplicationController
 
   # GET /enrollments/new
   def new
+    unless params.key?(:course_id)
+      respond_to do |format|
+        format.html { redirect_to enrollments_url, notice: 'Please visit courses page for creating new enrollment' }
+      end
+    end
     @enrollment = Enrollment.new
     @enrollment.course_id = params[:course_id]
   end
@@ -44,7 +49,7 @@ class EnrollmentsController < ApplicationController
 
     respond_to do |format|
       if @enrollment.save
-        format.html { redirect_to enrollment_url(@enrollment), notice: "Enrollment was successfully created." }
+        format.html { redirect_to enrollment_url(@enrollment), notice: 'Enrollment was successfully created.' }
         format.json { render :show, status: :created, location: @enrollment }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -57,7 +62,7 @@ class EnrollmentsController < ApplicationController
   def update
     respond_to do |format|
       if @enrollment.update(enrollment_params)
-        format.html { redirect_to enrollment_url(@enrollment), notice: "Enrollment was successfully updated." }
+        format.html { redirect_to enrollment_url(@enrollment), notice: 'Enrollment was successfully updated.' }
         format.json { render :show, status: :ok, location: @enrollment }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -68,7 +73,6 @@ class EnrollmentsController < ApplicationController
 
   def check_permission?(enrollment)
     is_admin = current_user.role == 'Admin'
-    can_delete = false
     can_delete = if current_user.role == 'Student'
                    current_user.student.can_delete_enrollment?(enrollment.student_id)
                  else
@@ -79,11 +83,16 @@ class EnrollmentsController < ApplicationController
   end
   # DELETE /enrollments/1 or /enrollments/1.json
   def destroy
-    check_permission?(@enrollment)
+    unless check_permission?(@enrollment)
+      respond_to do |format|
+        format.html { redirect_to enrollments_url, notice: "You don't have permission" }
+        format.json { head :no_content }
+      end
+    end
 
     @waitlists = Waitlist.where(course_id: @enrollment.course_id)
 
-    if !@waitlists.first.nil?
+    unless @waitlists.first.nil?
       @waitlists.sort_by(&:created_at)
       @waitlist = @waitlists.first
 
@@ -96,7 +105,7 @@ class EnrollmentsController < ApplicationController
 
     @enrollment.destroy
     respond_to do |format|
-      format.html { redirect_to enrollments_url, notice: "Enrollment was successfully destroyed." }
+      format.html { redirect_to enrollments_url, notice: 'Enrollment was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

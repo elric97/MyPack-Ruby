@@ -5,8 +5,12 @@ class UsersController < ApplicationController
 
   # GET /users or /users.json
   def index
-    redirect_to root_path
-    @users = User.all
+    @users = case current_user.role
+             when 'Admin'
+               User.all
+             else
+               User.where(id: current_user.id)
+             end
   end
 
   # GET /users/1 or /users/1.json

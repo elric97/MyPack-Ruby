@@ -3,8 +3,15 @@ class WaitlistsController < ApplicationController
 
   # GET /waitlists or /waitlists.json
   def index
-    redirect_to root_path if current_user.role == "Student"
-    @waitlists = Waitlist.all
+    @waitlists = case current_user.role
+                 when 'Admin'
+                   Waitlist.all
+                 when 'Student'
+                   Waitlist.where(student_id: current_user.student.id)
+                 else
+                   Waitlist.where('course_id in (select course_id from courses where instructor_id = ?)',
+                                  current_user.instructor.id)
+                 end
 
   end
 
@@ -31,11 +38,6 @@ class WaitlistsController < ApplicationController
     @waitlist = Waitlist.new(waitlist_params)
     @waitlist.course_id = waitlist_params[:course_id]
     @waitlist.student_id = waitlist_params[:student_id]
-
-
-
-
-
     respond_to do |format|
       if @waitlist.save
         format.html { redirect_to waitlist_url(@waitlist), notice: "Waitlist was successfully created." }

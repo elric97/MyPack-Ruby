@@ -12,7 +12,10 @@
   <body>
     <%= link_to "Home", root_path %>
     <% if current_user %>
-      <%= link_to "Edit User Profile", edit_user_path(current_user) %>
+      | <%= link_to "Edit User Profile", edit_user_path(current_user) %> |
+      <%= link_to "Course", courses_path %> |
+      <%= link_to "Enrollments", enrollments_path %> |
+      <%= link_to "Waitlist", waitlists_path %> |
       <%= link_to "Logout", logout_path %>
       <br>
       <% if !current_user.role.nil? %>
@@ -25,7 +28,7 @@
           <%= link_to "Instructor Profile", instructor_path(current_user.instructor[:id]) %>
         <% else %>
           <b>Student</b>
-          <%= link_to "Student Profile", instructor_path(current_user.student[:id]) %>
+          <%= link_to "Student Profile", student_path(current_user.student[:id]) %>
         <% end %>
       <% end %>
     <%end %>

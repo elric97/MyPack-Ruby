@@ -2,7 +2,6 @@ class InstructorsController < ApplicationController
   skip_before_action :authorized, only: [:new, :create]
   skip_before_action :role_assigned, only: [:new, :create]
   before_action :set_instructor, only: %i[ show edit update destroy ]
-  before_action :check_role
 
   # GET /instructors or /instructors.json
   def index
@@ -53,10 +52,10 @@ class InstructorsController < ApplicationController
 
     @user = User.find(@instructor.user_id)
     @user.role = "Instructor"
-    @user.save
 
     respond_to do |format|
       if @instructor.save
+        @user.save
         format.html { redirect_to instructor_url(@instructor), notice: "Instructor was successfully created." }
         format.json { render :show, status: :created, location: @instructor }
       else
