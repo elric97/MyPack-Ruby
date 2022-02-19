@@ -12,17 +12,23 @@
   <body>
     <%= link_to "Home", root_path %>
     <% if current_user %>
-      <%= link_to "Edit User Profile", edit_user_path(current_user) %>
+      | <%= link_to "Edit User Profile", edit_user_path(current_user) %> |
+      <%= link_to "Course", courses_path %> |
+      <%= link_to "Enrollments", enrollments_path %> |
+      <%= link_to "Waitlist", waitlists_path %> |
       <%= link_to "Logout", logout_path %>
       <br>
       <% if !current_user.role.nil? %>
         Logged in as <%= current_user.name %>. Role
         <% if current_user.role == 'Admin' %>
           <u>Admin</u>
+          <%= link_to "Admin Profile", admin_path(current_user.admin[:id]) %>
         <% elsif current_user.role == 'Instructor'%>
           <b><i>Instructor</i></b>
+          <%= link_to "Instructor Profile", instructor_path(current_user.instructor[:id]) %>
         <% else %>
           <b>Student</b>
+          <%= link_to "Student Profile", student_path(current_user.student[:id]) %>
         <% end %>
       <% end %>
     <%end %>

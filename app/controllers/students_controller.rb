@@ -17,11 +17,6 @@ class StudentsController < ApplicationController
 
   # GET /students/1 or /students/1.json
   def show
-    unless current_user.can_crud?(@student.user)
-      respond_to do |format|
-        format.html { redirect_to root_path, notice: 'You are not allowed access to this page.' }
-      end
-    end
   end
 
   # GET /students/new
@@ -36,11 +31,6 @@ class StudentsController < ApplicationController
 
   # GET /students/1/edit
   def edit
-    unless current_user.can_crud?(@student.user)
-      respond_to do |format|
-        format.html { redirect_to root_path, notice: 'You are not allowed access to this page.' }
-      end
-    end
   end
 
   # POST /students or /students.json
@@ -49,10 +39,10 @@ class StudentsController < ApplicationController
 
     @user = User.find(@student.user_id)
     @user.role = 'Student'
-    @user.save
 
     respond_to do |format|
       if @student.save
+        @user.save
         format.html { redirect_to student_url(@student), notice: 'Student was successfully created.' }
         format.json { render :show, status: :created, location: @student }
       else
@@ -87,9 +77,15 @@ class StudentsController < ApplicationController
 
   private
     # Use callbacks to share common setup or constraints between actions.
-    def set_student
-      @student = Student.find(params[:id])
+  def set_student
+    @student = Student.find_by(id: params[:id])
+    if @student.nil? || !current_user.can_crud?(@student.user)
+      respond_to do |format|
+        format.html { redirect_to students_url, notice: 'Not authorised to view this' }
+        format.json { head :no_content }
+      end
     end
+  end
 
     # Only allow a list of trusted parameters through.
     def student_params

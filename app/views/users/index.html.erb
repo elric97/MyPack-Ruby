@@ -28,4 +28,6 @@
 
 <br>
 
-<%= link_to 'New User', new_user_path %>
+<% if !current_user.role.nil? && current_user.role == 'Admin' %>
+  <%= link_to 'New User', new_user_path %>
+<% end %>

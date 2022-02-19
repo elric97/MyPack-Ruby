@@ -12,4 +12,8 @@ class Student < ApplicationRecord
   validates :DOB, presence: true
   validates :phone, presence: true, uniqueness: true
   validates :major, presence: true
+
+  def can_delete_enrollment?(enrolled_student_id)
+    id == enrolled_student_id
+  end
 end

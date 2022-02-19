@@ -14,7 +14,7 @@ class Course < ApplicationRecord
   validates :startTime, presence: true
   validates :endTime, presence: true
   validates :courseCode, uniqueness: true, presence: true
-  validates :capacity, presence: true
+  validates :capacity, presence: true, allow_nil: false
   validates :wlCapacity, presence: true
   validates :status, presence: true
   validates :roomNumber, presence: true
@@ -22,28 +22,22 @@ class Course < ApplicationRecord
   validate :check_course_capacity
   validate :check_if_empty
   validate :weekday2_is_not_same_as_weekday1
-  validate :endTime_is_after_startTime
+  validate :end_is_after_start
 
-  def endTime_is_after_startTime
-    if endTime <= startTime
-      errors.add(:endTime, 'cannot be before the start time')
-    end
+  def end_is_after_start
+    errors.add(:endTime, 'cannot be before the start time') if endTime <= startTime
   end
 
   def weekday2_is_not_same_as_weekday1
-    if weekday1 == weekday2
-      errors.add(:weekday2, 'cannot be same as weekday1')
-    end
+    errors.add(:weekday2, 'cannot be same as weekday1') if weekday1 == weekday2
   end
+
   def check_course_capacity
-    if capacity <= 0
-      errors.add(:capacity, 'cannot be 0 or less')
-    end
+    errors.add(:capacity, 'cannot be 0 or less') if capacity.nil? || capacity <= 0
   end
+
   def check_if_empty
-    if roomNumber == " "
-      errors.add(:roomNumber, 'cannot be an empty string')
-    end
+    errors.add(:roomNumber, 'cannot be an empty string') if !nil? || roomNumber == " "
   end
 
 end

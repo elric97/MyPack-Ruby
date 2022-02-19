@@ -5,6 +5,9 @@
 <table>
   <thead>
     <tr>
+      <td>Student ID</td>
+      <td>Student Name</td>
+      <td>Course Name</td>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -12,6 +15,9 @@
   <tbody>
     <% @enrollments.each do |enrollment| %>
       <tr>
+        <td><%= enrollment.student.id %></td>
+        <td><%= enrollment.student.name %></td>
+        <td><%= enrollment.course.name %></td>
         <td><%= link_to 'Show', enrollment %></td>
         <td><%= link_to 'Edit', edit_enrollment_path(enrollment) %></td>
         <td><%= link_to 'Destroy', enrollment, method: :delete, data: { confirm: 'Are you sure?' } %></td>
@@ -22,4 +28,4 @@
 
 <br>
 
-<%= link_to 'New Enrollment', new_enrollment_path %>
+<%= link_to 'New Enrollment', courses_path %>

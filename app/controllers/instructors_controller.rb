@@ -2,7 +2,6 @@ class InstructorsController < ApplicationController
   skip_before_action :authorized, only: [:new, :create]
   skip_before_action :role_assigned, only: [:new, :create]
   before_action :set_instructor, only: %i[ show edit update destroy ]
-  before_action :check_role
 
   # GET /instructors or /instructors.json
   def index
@@ -21,11 +20,6 @@ class InstructorsController < ApplicationController
   end
   # GET /instructors/1 or /instructors/1.json
   def show
-    unless current_user.can_crud?(@instructor.user)
-      respond_to do |format|
-        format.html { redirect_to root_path, notice: 'You are not allowed access to this page.' }
-      end
-    end
   end
 
   # GET /instructors/new
@@ -40,11 +34,6 @@ class InstructorsController < ApplicationController
 
   # GET /instructors/1/edit
   def edit
-    unless current_user.can_crud?(@instructor.user)
-      respond_to do |format|
-        format.html { redirect_to root_path, notice: 'You are not allowed access to this page.' }
-      end
-    end
   end
 
   # POST /instructors or /instructors.json
@@ -53,10 +42,10 @@ class InstructorsController < ApplicationController
 
     @user = User.find(@instructor.user_id)
     @user.role = "Instructor"
-    @user.save
 
     respond_to do |format|
       if @instructor.save
+        @user.save
         format.html { redirect_to instructor_url(@instructor), notice: "Instructor was successfully created." }
         format.json { render :show, status: :created, location: @instructor }
       else
@@ -93,7 +82,13 @@ class InstructorsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
   def set_instructor
-    @instructor = Instructor.find(params[:id])
+    @instructor = Instructor.find_by(id: params[:id])
+    if @instructor.nil? || !current_user.can_crud?(@instructor.user)
+      respond_to do |format|
+        format.html { redirect_to instructors_url, notice: 'Not authorised to view this' }
+        format.json { head :no_content }
+      end
+    end
   end
 
   def check_role
