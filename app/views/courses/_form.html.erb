@@ -23,12 +23,12 @@
 
   <div class="field">
     <%= form.label :weekday1 %>
-    <%= form.text_field :weekday1 %>
+    <%= form.select :weekday1, [['',''], ['MON','MON'],['TUE','TUE'],['WED','WED'], ['THU','THU'], ['FRI','FRI']] %>
   </div>
 
   <div class="field">
     <%= form.label :weekday2 %>
-    <%= form.text_field :weekday2 %>
+    <%= form.select :weekday2, [['',''],['MON','MON'],['TUE','TUE'],['WED','WED'], ['THU','THU'], ['FRI','FRI']] %>
   </div>
 
   <div class="field">
