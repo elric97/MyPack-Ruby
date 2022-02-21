@@ -2,31 +2,31 @@
 ### Deployed application link - https://student-enrollment-oodd.herokuapp.com
 ### Steps to run the program
 * Clone this repository
-```
+```shell
 git clone https://github.ncsu.edu/gkogant/CSC_ECE_517_Program_2.git
 ```
 * Go to the directory
-```
-CSC_ECE_517_Program_2
+```shell
+cd CSC_ECE_517_Program_2
 ```
 * Install required gems
-```
+```shell
 bundle install
 ```
 * Run database migration on your system
-```
+```shell
 rails db:migrate
 ```
 * If webpacker is not installed on the system, run
-```
+```shell
 rails webpacker:install
 ```
 * Run seed for the setting up required data (Only Admin will be created initially)
-```
+```shell
 rails db:seed
 ```
 * Finally, run the rails server
-```
+```shell
 rails server
 ```
 
@@ -89,6 +89,13 @@ Note: You won't be able to proceed further without choosing a role
 
 <img width="600" alt="Screenshot 2022-02-16 at 10 00 51 PM" src="https://media.github.ncsu.edu/user/24777/files/c9e2a844-4d35-4ef4-84db-c6f2af256c22">
 
+### Testing
+
+We have written test for user controller(test/controllers/) and model(test/models/), they can be run via the following commands
+```shell
+rails test test/models/user_test.rb
+rails test test/controllers/users_controller_test.rb
+```
 
 ### Functionalities
 
