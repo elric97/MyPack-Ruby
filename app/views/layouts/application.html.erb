@@ -13,6 +13,15 @@
     <%= link_to "Home", root_path %>
     <% if current_user %>
       | <%= link_to "User Profile", user_path(current_user[:id]) %> |
+      <% if !current_user.role.nil? %>
+        <% if current_user.role == 'Admin' %>
+          <%= link_to "Admins", admins_path %>
+        <% elsif current_user.role == 'Instructor'%>
+          <%= link_to "Instructors", instructors_path %>
+        <% elsif  current_user.role == 'Student'%>
+          <%= link_to "Students", students_path %>
+        <% end %>
+      <% end %> |
       <%= link_to "Course", courses_path %> |
       <%= link_to "Enrollments", enrollments_path %> |
       <%= link_to "Waitlist", waitlists_path %> |
