@@ -6,7 +6,7 @@ class User < ApplicationRecord
   validates :email, uniqueness: true, presence: true,  format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i, on: :create }
   validates :password_digest, presence: true
   validates :name, presence: true
-  validate :check_if_empty_name, :check_if_empty_email, :check_if_empty_password_digest
+  validate :check_if_empty_name, :check_if_empty_email,
 
 
   def check_if_empty_name
@@ -17,9 +17,6 @@ class User < ApplicationRecord
     errors.add(:email, 'cannot be an empty string') if email.nil? || email == " "
   end
 
-  def check_if_empty_password_digest
-    errors.add(:password_digest, 'cannot be an empty string') if password_digest.nil? || password_digest == " "
-  end
   def can_assign_roles?
     role == 'Admin'
   end
