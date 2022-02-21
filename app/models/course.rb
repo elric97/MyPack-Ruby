@@ -23,6 +23,7 @@ class Course < ApplicationRecord
   validate :check_if_empty
   validate :weekday2_is_not_same_as_weekday1
   validate :end_is_after_start
+  validate :check_course_code
 
   def end_is_after_start
     errors.add(:endTime, 'cannot be before the start time') if endTime <= startTime
@@ -37,7 +38,10 @@ class Course < ApplicationRecord
   end
 
   def check_if_empty
-    errors.add(:roomNumber, 'cannot be an empty string') if !nil? || roomNumber == " "
+    errors.add(:roomNumber, 'cannot be an empty string') if nil? || roomNumber == " "
   end
 
+  def check_course_code
+    errors.add(:courseCode, 'must have 3 letters followed by 3 digits') if courseCode !=~ /\A[a-z]{3}\d{3}\Z/
+  end
 end
