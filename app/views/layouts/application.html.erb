@@ -12,7 +12,7 @@
   <body>
     <%= link_to "Home", root_path %>
     <% if current_user %>
-      | <%= link_to "Edit User Profile", edit_user_path(current_user) %> |
+      | <%= link_to "User Profile", user_path(current_user[:id]) %> |
       <%= link_to "Course", courses_path %> |
       <%= link_to "Enrollments", enrollments_path %> |
       <%= link_to "Waitlist", waitlists_path %> |

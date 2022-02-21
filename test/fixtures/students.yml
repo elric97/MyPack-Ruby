@@ -1,13 +1,15 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  studentID: MyString
+  studentID: "1112"
   DOB: 2022-02-10
   phone: MyString
   major: MyString
+  user_id: 1
 
 two:
-  studentID: MyString
+  studentID: "2111"
   DOB: 2022-02-10
   phone: MyString
   major: MyString
+  user_id: 1

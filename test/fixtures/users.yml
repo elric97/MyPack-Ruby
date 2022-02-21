@@ -2,12 +2,12 @@
 
 one:
   name: MyString
-  email: MyString
+  email: "abcd@gmail.com"
   password_digest: MyString
   role: MyString
 
 two:
   name: MyString
-  email: MyString
+  email: "bcda@gmail.com"
   password_digest: MyString
   role: MyString
