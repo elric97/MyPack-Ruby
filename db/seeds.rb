@@ -6,4 +6,5 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-admin = Admin.create(phone: '9848103683', user_id: 5)
+user = User.create(name: 'Admin2', email: 'admin2@admin.com', password_digest: BCrypt::Password.create('secret'), role: 'Admin')
+admin = Admin.create(phone: '1234567890', user_id: user.id)

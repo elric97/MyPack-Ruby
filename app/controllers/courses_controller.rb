@@ -48,6 +48,12 @@ class CoursesController < ApplicationController
 
   # GET /courses/1/edit
   def edit
+    unless can_destroy?(@course)
+      respond_to do |format|
+        format.html { redirect_to courses_url, notice: 'Permission denied: You don\'t have permission to do this' }
+        format.json { head :no_content }
+      end
+    end
   end
 
   # POST /courses or /courses.json
