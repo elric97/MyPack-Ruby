@@ -41,8 +41,7 @@ class StudentsController < ApplicationController
     @user.role = 'Student'
 
     respond_to do |format|
-      if @student.save
-        @user.save
+      if @student.save && @user.save
         format.html { redirect_to student_url(@student), notice: 'Student was successfully created.' }
         format.json { render :show, status: :created, location: @student }
       else

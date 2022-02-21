@@ -55,12 +55,12 @@
   <%= @course.roomNumber %>
 </p>
 <hr>
-<% if !current_user.role.nil? && current_user.role != 'Student' %>
+<% if !current_user.role.nil? && current_user.role != 'Student' && !@enrollments.nil?%>
   <table>
     <th> Enrolled Students</th>
     <th colspan="2"></th>
     <th></th>
-    <%  @course.enrollments.each do |course_enrollment|%>
+    <%  @enrollments.each do |course_enrollment|%>
       <% @student = Student.find(course_enrollment.student_id) %>
       <tr>
         <td> <%= @student.name%> </td>
@@ -71,12 +71,12 @@
   </table>
 <% end %>
 <hr>
-<% if !current_user.role.nil? && current_user.role != 'Student' %>
+<% if !current_user.role.nil? && current_user.role != 'Student' && !@waitlists.nil?%>
   <table>
     <th> Waitlisted Students</th>
     <th colspan="2"></th>
     <th></th>
-    <%  @course.waitlists.each do |course_waitlist|%>
+    <%  @waitlists.each do |course_waitlist|%>
       <% @student = Student.find(course_waitlist.student_id) %>
       <tr>
         <td> <%= @student.name%> </td>

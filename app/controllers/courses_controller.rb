@@ -27,6 +27,11 @@ class CoursesController < ApplicationController
 
   # GET /courses/1 or /courses/1.json
   def show
+    if current_user.role == 'Admin' ||
+       (current_user.role == 'Instructor' && @course.instructor_id == current_user.instructor.id)
+      @enrollments = @course.enrollments
+      @waitlists = @course.waitlists
+    end
   end
 
     # GET /courses/new
@@ -65,7 +70,8 @@ class CoursesController < ApplicationController
   # PATCH/PUT /courses/1 or /courses/1.json
   def update
     respond_to do |format|
-      if @course.update(course_params)
+      if @course.can_update_cap?(course_params[:capacity]) &&
+         @course.can_update_wlcap?(course_params[:wlCapacity]) && @course.update(course_params)
         format.html { redirect_to course_url(@course), notice: 'Course was successfully updated.' }
         format.json { render :show, status: :ok, location: @course }
       else
@@ -77,11 +83,17 @@ class CoursesController < ApplicationController
 
   # DELETE /courses/1 or /courses/1.json
   def destroy
-    @course.destroy
-
-    respond_to do |format|
-      format.html { redirect_to courses_url, notice: 'Course was successfully destroyed.' }
-      format.json { head :no_content }
+    if !can_destroy?(@course)
+      respond_to do |format|
+        format.html { redirect_to courses_url, notice: 'Permission denied: You don\'t have permission to do this' }
+        format.json { head :no_content }
+      end
+    else
+      @course.destroy
+      respond_to do |format|
+        format.html { redirect_to courses_url, notice: 'Course was successfully destroyed.' }
+        format.json { head :no_content }
+      end
     end
   end
 
@@ -89,6 +101,11 @@ class CoursesController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
   def set_course
     @course = Course.find(params[:id])
+  end
+
+  def can_destroy?(course)
+    current_user.role == 'Admin' ||
+      (current_user.role == 'Instructor' && current_user.instructor.id == course.instructor_id)
   end
 
     # Only allow a list of trusted parameters through.
