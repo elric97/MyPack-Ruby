@@ -100,7 +100,13 @@ class CoursesController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
   def set_course
-    @course = Course.find(params[:id])
+    @course = Course.find_by(id: params[:id])
+    if @course.nil?
+      respond_to do |format|
+        format.html { redirect_to courses_url, notice: 'Not authorised to view this' }
+        format.json { head :no_content }
+      end
+    end
   end
 
   def can_destroy?(course)
