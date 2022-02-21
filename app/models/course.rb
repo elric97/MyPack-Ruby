@@ -38,10 +38,22 @@ class Course < ApplicationRecord
   end
 
   def check_if_empty
-    errors.add(:roomNumber, 'cannot be an empty string') if nil? || roomNumber == " "
+    errors.add(:roomNumber, 'cannot be an empty string') if nil? || roomNumber.empty?
   end
 
   def check_course_code
-    errors.add(:courseCode, 'must have 3 letters followed by 3 digits') if courseCode !=~ /\A[a-z]{3}\d{3}\Z/
+    if nil? || !/\A[a-zA-Z]{3}\d{3}\Z/.match?(courseCode)
+      errors.add(:courseCode, 'must have 3 letters followed by 3 digits')
+    end
+  end
+
+  def can_update_cap?(cap)
+    errors.add(:capacity, " can't be less then already enrolled students")
+    (cap.to_i - Enrollment.where(course_id: id).count).positive?
+  end
+
+  def can_update_wlcap?(wl_cap)
+    errors.add(:wlCapacity, " can't be less then already wait listed students")
+    (wl_cap.to_i - Waitlist.where(course_id: id).count).positive?
   end
 end

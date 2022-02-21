@@ -6,10 +6,3 @@ one:
   phone: MyString
   major: MyString
   user_id: 1
-
-two:
-  studentID: "2111"
-  DOB: 2022-02-10
-  phone: MyString
-  major: MyString
-  user_id: 1

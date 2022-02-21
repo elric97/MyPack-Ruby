@@ -26,7 +26,7 @@
         <% elsif current_user.role == 'Instructor'%>
           <b><i>Instructor</i></b>
           <%= link_to "Instructor Profile", instructor_path(current_user.instructor[:id]) %>
-        <% else %>
+        <% elsif  current_user.role == 'Student'%>
           <b>Student</b>
           <%= link_to "Student Profile", student_path(current_user.student[:id]) %>
         <% end %>

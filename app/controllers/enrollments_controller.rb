@@ -71,6 +71,7 @@ class EnrollmentsController < ApplicationController
     end
   end
 
+  # Checks for permission of the user, if he is allowed to remove a student
   def check_permission?(enrollment)
     is_admin = current_user.role == 'Admin'
     can_delete = if current_user.role == 'Student'
@@ -81,32 +82,33 @@ class EnrollmentsController < ApplicationController
 
     is_admin || can_delete
   end
+
   # DELETE /enrollments/1 or /enrollments/1.json
   def destroy
-    unless check_permission?(@enrollment)
+    if !check_permission?(@enrollment)
       respond_to do |format|
-        format.html { redirect_to enrollments_url, notice: "You don't have permission" }
+        format.html { redirect_to courses_url, notice: "You don't have permission" }
         format.json { head :no_content }
       end
-    end
+    else
+      @waitlists = Waitlist.where(course_id: @enrollment.course_id)
 
-    @waitlists = Waitlist.where(course_id: @enrollment.course_id)
+      unless @waitlists.first.nil?
+        @waitlists.sort_by(&:created_at)
+        @waitlist = @waitlists.first
 
-    unless @waitlists.first.nil?
-      @waitlists.sort_by(&:created_at)
-      @waitlist = @waitlists.first
+        @newEnrollment = Enrollment.new(:course_id => @waitlist.course_id, :student_id => @waitlist.student_id)
 
-      @newEnrollment = Enrollment.new(:course_id => @waitlist.course_id, :student_id => @waitlist.student_id)
+        @waitlist.destroy
 
-      @waitlist.destroy
+        @newEnrollment.save
+      end
 
-      @newEnrollment.save
-    end
-
-    @enrollment.destroy
-    respond_to do |format|
-      format.html { redirect_to enrollments_url, notice: 'Enrollment was successfully destroyed.' }
-      format.json { head :no_content }
+      @enrollment.destroy
+      respond_to do |format|
+        format.html { redirect_to enrollments_url, notice: 'Enrollment was successfully destroyed.' }
+        format.json { head :no_content }
+      end
     end
   end
 

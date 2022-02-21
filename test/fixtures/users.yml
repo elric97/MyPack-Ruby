@@ -3,11 +3,17 @@
 one:
   name: MyString
   email: "abcd@gmail.com"
-  password_digest: MyString
+  password_digest: <%= BCrypt::Password.create('secret') %>
   role: MyString
 
 two:
   name: MyString
   email: "bcda@gmail.com"
-  password_digest: MyString
+  password_digest: <%= BCrypt::Password.create('secret') %>
+  role: MyString
+
+three:
+  name: MyString
+  email: "bcaada@gmail.com"
+  password_digest: <%= BCrypt::Password.create('secret') %>
   role: MyString

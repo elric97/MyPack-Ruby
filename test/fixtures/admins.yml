@@ -2,8 +2,4 @@
 
 one:
   phone: MyString
-  user_id: 1
-
-two:
-  phone: MyString
-  user_id: 1
+  user_id: 3
