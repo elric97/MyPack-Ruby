@@ -20,10 +20,12 @@ class Course < ApplicationRecord
   validates :roomNumber, presence: true
 
   validate :check_course_capacity
-  validate :check_if_empty
+  validate :check_if_empty_room
   validate :weekday2_is_not_same_as_weekday1
   validate :end_is_after_start
   validate :check_course_code
+  validate :check_waitlist_capacity
+  validate :check_if_empty_description, :check_if_empty_name, :check_if_empty_weekday1, :check_if_empty_status, :check_if_empty_course_code
 
   def end_is_after_start
     errors.add(:endTime, 'cannot be before the start time') if endTime <= startTime
@@ -37,10 +39,33 @@ class Course < ApplicationRecord
     errors.add(:capacity, 'cannot be 0 or less') if capacity.nil? || capacity <= 0
   end
 
-  def check_if_empty
-    errors.add(:roomNumber, 'cannot be an empty string') if nil? || roomNumber.empty?
+  def check_waitlist_capacity
+    errors.add(:wlCapacity, 'cannot be null or less than 0') if wlCapacity.nil? || wlCapacity < 0
   end
 
+  def check_if_empty_room
+    errors.add(:roomNumber, 'cannot be an empty string') if roomNumber.nil? || roomNumber == " "
+  end
+
+  def check_if_empty_description
+    errors.add(:description, 'cannot be an empty string') if description.nil? || description == " "
+  end
+
+  def check_if_empty_name
+    errors.add(:name, 'cannot be an empty string') if name.nil? || name == " "
+  end
+
+  def check_if_empty_weekday1
+    errors.add(:weekday1, 'cannot be empty ') if weekday1.nil? ||  weekday1 == " "
+  end
+
+  def check_if_empty_status
+    errors.add(:status, 'cannot be empty ') if status.nil? ||  status == " "
+  end
+
+  def check_if_empty_course_code
+    errors.add(:courseCode, 'cannot be empty ') if courseCode.nil? ||  courseCode == " "
+  end
   def check_course_code
     if nil? || !/\A[a-zA-Z]{3}\d{3}\Z/.match?(courseCode)
       errors.add(:courseCode, 'must have 3 letters followed by 3 digits')
