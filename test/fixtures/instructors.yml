@@ -2,6 +2,4 @@
 
 one:
   department: MyString
-
-two:
-  department: MyString
+  user_id: 2

@@ -66,18 +66,17 @@ class UsersController < ApplicationController
 
   # DELETE /users/1 or /users/1.json
   def destroy
-    unless current_user.can_destroy?(@user)
+    if !current_user.can_destroy?(@user)
       respond_to do |format|
-        format.html { redirect_to root_path, alert: 'Admin user cannot be destroyed' }
+        format.html { redirect_to users_path, alert: 'Permission Denied: User cannot be destroyed' }
         format.json { head :no_content }
       end
-    end
-
-    @user.destroy
-
-    respond_to do |format|
-      format.html { redirect_to root_path, notice: 'User was successfully destroyed.' }
-      format.json { head :no_content }
+    else
+      @user.destroy
+      respond_to do |format|
+        format.html { redirect_to users_path, notice: 'User was successfully destroyed.' }
+        format.json { head :no_content }
+      end
     end
   end
 

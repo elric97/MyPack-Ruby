@@ -12,6 +12,7 @@ one:
   wlCapacity: 1
   status: MyString
   roomNumber: MyString
+  instructor_id: 1
 
 two:
   name: MyString
@@ -25,3 +26,4 @@ two:
   wlCapacity: 1
   status: MyString
   roomNumber: MyString
+  instructor_id: 2
