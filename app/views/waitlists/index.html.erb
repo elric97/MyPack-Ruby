@@ -18,8 +18,6 @@
         <td><%= waitlist.student.id %></td>
         <td><%= waitlist.student.name %></td>
         <td><%= waitlist.course.name %></td>
-        <td><%= link_to 'Show', waitlist %></td>
-        <td><%= link_to 'Edit', edit_waitlist_path(waitlist) %></td>
         <td><%= link_to 'Destroy', waitlist, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
