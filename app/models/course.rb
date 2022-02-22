@@ -73,12 +73,12 @@ class Course < ApplicationRecord
   end
 
   def can_update_cap?(cap)
-    errors.add(:capacity, " can't be less then already enrolled students")
+    errors.add(:capacity, " can't be less than already enrolled students")
     (cap.to_i - Enrollment.where(course_id: id).count) >= 0
   end
 
   def can_update_wlcap?(wl_cap)
-    errors.add(:wlCapacity, " can't be less then already wait listed students")
+    errors.add(:wlCapacity, " can't be less than already wait listed students")
     (wl_cap.to_i - Waitlist.where(course_id: id).count) >= 0
   end
 end
