@@ -74,9 +74,10 @@ class EnrollmentsController < ApplicationController
   # Checks for permission of the user, if he is allowed to remove a student
   def check_permission?(enrollment)
     is_admin = current_user.role == 'Admin'
-    can_delete = if current_user.role == 'Student'
+    can_delete = case current_user.role
+                 when 'Student'
                    current_user.student.can_delete_enrollment?(enrollment.student_id)
-                 else
+                 when 'Instructor'
                    current_user.instructor.can_delete_enrollment?(enrollment.course)
                  end
 
