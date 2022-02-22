@@ -10,7 +10,7 @@ class Student < ApplicationRecord
   validates :studentID, uniqueness: true, presence: true
   delegate :name, :email, to: :user, allow_nil: :true
   validates :DOB, presence: true
-  validates :phone, presence: true, uniqueness: true
+  validates :phone, presence: true, uniqueness: true, format: { with: /\A\d+\z/, message: "Integer Only" }
   validates :major, presence: true
 
   validate :check_if_empty_studentID, :check_if_empty_phone, :check_if_empty_major

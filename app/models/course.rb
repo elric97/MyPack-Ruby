@@ -14,8 +14,8 @@ class Course < ApplicationRecord
   validates :startTime, presence: true
   validates :endTime, presence: true
   validates :courseCode, uniqueness: true, presence: true
-  validates :capacity, presence: true, allow_nil: false
-  validates :wlCapacity, presence: true
+  validates :capacity, presence: true, allow_nil: false, format: { with: /\A\d+\z/, message: "Number Only" }
+  validates :wlCapacity, presence: true, format: { with: /\A\d+\z/, message: "Number Only" }
   validates :status, presence: true
   validates :roomNumber, presence: true
 
@@ -66,6 +66,7 @@ class Course < ApplicationRecord
   def check_if_empty_course_code
     errors.add(:courseCode, 'cannot be empty ') if courseCode.nil? ||  courseCode == " "
   end
+
   def check_course_code
     if nil? || !/\A[a-zA-Z]{3}\d{3}\Z/.match?(courseCode)
       errors.add(:courseCode, 'must have 3 letters followed by 3 digits')
